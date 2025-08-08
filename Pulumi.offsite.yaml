@@ -1,0 +1,4 @@
+secretsprovider: awskms://alias/sironheart/pulumi?region=eu-central-1
+encryptedkey: AQICAHh/RllyDm2YuwCODh0aZqKy2caFuRuQ+O25emVytt/baAHUEFkDFDPNH5xhpgVyd8v/AAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMyBJDhsToADFr+XRaAgEQgDukxeuOkr+hGpScvf6ei8n5de+TXJK0eszjpIjuJcdtfFfKXM5iGRdnlDZQ3DmNQhqzvhmb2Bajekchhw==
+config:
+  iac:default-ssh-user: sironheart

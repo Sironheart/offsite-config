@@ -1,0 +1,12 @@
+[env]
+AWS_PROFILE = "private"
+
+[tools]
+1password-cli = "latest"
+node = "24.5.0"
+pulumi = "latest"
+ansible = "latest"
+
+[tasks.init]
+run = "op inject -i {{config_root}}/mise.local.toml.op -o {{config_root}}/mise.local.toml"
+description = "Setup environment, using the 1password cli"

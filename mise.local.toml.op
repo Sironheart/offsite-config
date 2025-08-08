@@ -1,0 +1,2 @@
+[env]
+HCLOUD_TOKEN = "op://Home Cluster/Hetzner/token"
