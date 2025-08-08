@@ -7,6 +7,7 @@
         "typescript": "^5.0.0"
     },
     "dependencies": {
+        "@pulumi/github": "^6.7.3",
         "@pulumi/hcloud": "^1.24.0",
         "@pulumi/pulumi": "^3.113.0"
     }

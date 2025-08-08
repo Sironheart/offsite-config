@@ -1,15 +1,13 @@
-import * as hetzner from "@pulumi/hcloud";
 import * as pulumi from "@pulumi/pulumi";
+import * as hetzner from "@pulumi/hcloud";
+import { OffsiteSettings } from "./types";
 
 const resourcePrefix = "authentik";
 
-export async function setupAuthentikServer(
-  provider: hetzner.Provider,
-  config: pulumi.Config,
-) {
+export async function setupAuthentikServer(settings: OffsiteSettings) {
   const hostname = "auth.beisenherz.dev";
 
-  new hetzner.Server(
+  const authentikServer = new hetzner.Server(
     `${resourcePrefix}:server`,
     {
       name: hostname,
@@ -18,9 +16,9 @@ export async function setupAuthentikServer(
 
       datacenter: "fsn1-dc14",
 
-      labels: {
-        source: "github/sironheart/offsite",
-      },
+      labels: pulumi.output({
+        source: "github_sironheart_offsite",
+      }),
 
       publicNets: [
         {
@@ -28,49 +26,41 @@ export async function setupAuthentikServer(
           ipv6Enabled: true,
         },
       ],
+
+      sshKeys: ["RTL ssh"],
     },
-    { provider },
+    { provider: settings.hetznerProvider },
   );
 
-  // new upcloud.Server(
-  //   `${resourcePrefix}:server`,
-  //   {
-  //     hostname: hostname,
-  //     zone: "nl-ams1",
-  //     plan: "1xCPU-1GB",
-  //     firewall: true,
-  //
-  //     labels: {
-  //       source: "github/sironheart/offsite",
-  //     },
-  //
-  //     metadata: true,
-  //     timezone: "Europe/Berlin",
-  //
-  //     template: {
-  //       storage: "Debian GNU/Linux 12 (Bookworm)",
-  //       size: 25,
-  //
-  //       backupRule: {
-  //         interval: "daily",
-  //         time: "0500",
-  //         retention: 3,
-  //       },
-  //     },
-  //
-  //     networkInterfaces: [
-  //       {
-  //         type: "public",
-  //       },
-  //     ],
-  //
-  //     login: {
-  //       user: config.require("default-ssh-user"),
-  //       keys: [
-  //         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGXksy6MukTkczCaGgSwF9DK/7qRdHB93LynQ5DNihoU",
-  //       ],
-  //     },
-  //   },
-  //   { provider: provider },
-  // );
+  new hetzner.Firewall(
+    `${resourcePrefix}:firewall`,
+    {
+      name: "Default",
+      rules: [
+        {
+          direction: "in",
+          protocol: "tcp",
+          port: "80",
+          sourceIps: ["0.0.0.0/0", "::/0"],
+        },
+        {
+          direction: "in",
+          protocol: "tcp",
+          port: "443",
+          sourceIps: ["0.0.0.0/0", "::/0"],
+        },
+        {
+          direction: "in",
+          protocol: "udp",
+          port: "443",
+          sourceIps: ["0.0.0.0/0", "::/0"],
+        },
+      ],
+
+      labels: {
+        source: "github_sironheart_offsite",
+      },
+    },
+    { provider: settings.hetznerProvider },
+  );
 }

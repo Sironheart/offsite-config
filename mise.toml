@@ -8,5 +8,5 @@ pulumi = "latest"
 ansible = "latest"
 
 [tasks.init]
-run = "op inject -i {{config_root}}/mise.local.toml.op -o {{config_root}}/mise.local.toml"
+run = "op inject -i {{config_root}}/mise.local.toml.op -o {{config_root}}/mise.local.toml && op inject -i {{config_root}}/docker/.env.op -o {{config_root}}/docker/.env"
 description = "Setup environment, using the 1password cli"
