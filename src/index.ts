@@ -1,6 +1,8 @@
-import { setupAuthentikServer } from "./authentik";
-import { OffsiteSettings } from "./types";
+import { preconfigureDefaultHCloudSettings } from "./hetzner";
+import { setupGithub } from "./github/";
 
-export function setupOffsite(settings: OffsiteSettings) {
-  setupAuthentikServer(settings);
+export function setupOffsite() {
+  preconfigureDefaultHCloudSettings();
+
+  setupGithub();
 }
